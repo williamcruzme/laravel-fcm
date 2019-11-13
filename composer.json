@@ -1,18 +1,27 @@
 {
   "name": "williamcruzme/laravel-fcm",
+  "type": "library",
   "description": "A powerful Laravel package to send Push Notifications",
+  "keywords": [
+    "laravel",
+    "notification",
+    "channels"
+  ],
   "license": "MIT",
   "authors": [
     {
       "name": "williamcruzme",
-      "email": "sv.johncruz@gmail.com"
+      "email": "sv.johncruz@gmail.com",
+      "homepage": "https://github.com/williamcruzme"
     }
   ],
-  "minimum-stability": "dev",
   "require": {
     "php": "^7.1.3",
-    "guzzlehttp/guzzle": "^6.3@dev",
-    "illuminate/notifications": "~5.8.0|~5.9.0"
+    "guzzlehttp/guzzle": "*",
+    "illuminate/notifications": "*"
+  },
+  "config": {
+    "sort-packages": true
   },
   "extra": {
     "laravel": {
