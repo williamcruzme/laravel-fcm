@@ -1,0 +1,32 @@
+{
+  "name": "williamcruzme/laravel-fcm",
+  "description": "A powerful Laravel package to send Push Notifications",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "williamcruzme",
+      "email": "sv.johncruz@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": "^7.1.3",
+    "guzzlehttp/guzzle": "^6.3@dev",
+    "illuminate/notifications": "~5.8.0|~5.9.0"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "williamcruzme\\FCM\\FCMServiceProvider"
+      ],
+      "aliases": {
+        "Device": "williamcruzme\\FCM\\Facades\\Device"
+      }
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "williamcruzme\\FCM\\": "src/"
+    }
+  }
+}
