@@ -2,6 +2,7 @@
 <h1 align="center" style="text-align:center">Laravel FCM</h1>
 
 <p align="center">
+  <a href="https://laravel.com/"><img src="https://badgen.net/badge/Laravel/5.5.x/red" alt="Laravel"></a>
   <a href="https://laravel.com/"><img src="https://badgen.net/badge/Laravel/6.x/red" alt="Laravel"></a>
 </p>
 
