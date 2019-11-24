@@ -16,7 +16,14 @@ trait ManageDevices
     {
         $request->validate($this->rules(), $this->validationErrorMessages());
 
-        $this->guard()->user()->devices()->create($request->all());
+        // Retrieve device by token
+        $device = $this->guard()->user()->devices()->whereToken($request->token)->first();
+
+        if ($device) {
+            $device->touch();
+        } else {
+            $this->guard()->user()->devices()->create($request->all());
+        }
 
         return response()->json([
             'message' => 'Success',
@@ -34,7 +41,6 @@ trait ManageDevices
         // Retrieve device by token
         $device = $this->guard()->user()->devices()->whereToken($request->token)->first();
 
-        // Check if device exists
         if (! $device) {
             return response()->json([
                 'message' => 'Device not found.',
@@ -54,7 +60,7 @@ trait ManageDevices
     protected function rules()
     {
         return [
-            'token' => ['required', 'string', 'unique:devices'],
+            'token' => ['required', 'string'],
         ];
     }
 
