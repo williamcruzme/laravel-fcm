@@ -279,6 +279,10 @@ Device::routes('App\Http\Controllers');
 The `createRules` `deleteRules` `validationErrorMessages` methods in the `DeviceController` allows you override the default request validations:
 
 ```php
+<?php
+
+namespace App\Http\Controllers;
+
 use williamcruzme\FCM\Traits\ManageDevices;
 
 class DeviceController extends Controller {
@@ -326,6 +330,10 @@ class DeviceController extends Controller {
 The `guard` method in the `DeviceController` allows you override the default guard:
 
 ```php
+<?php
+
+namespace App\Http\Controllers;
+
 use williamcruzme\FCM\Traits\ManageDevices;
 
 class DeviceController extends Controller {
