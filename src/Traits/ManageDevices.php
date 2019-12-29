@@ -14,9 +14,8 @@ trait ManageDevices
      */
     public function store(Request $request)
     {
-        $request->validate($this->rules(), $this->validationErrorMessages());
+        $request->validate($this->createRules(), $this->validationErrorMessages());
 
-        // Retrieve device by token
         $device = $this->guard()->user()->devices()->whereToken($request->token)->first();
 
         if ($device) {
@@ -36,29 +35,34 @@ trait ManageDevices
      */
     public function destroy(Request $request)
     {
-        // Retrieve device by token
-        $device = $this->guard()->user()->devices()->whereToken($request->token)->first();
+        $request->validate($this->deleteRules(), $this->validationErrorMessages());
 
-        if (! $device) {
-            return response()->json([
-                'message' => 'Device not found.',
-            ], 404);
-        }
-
-        $device->delete();
+        $this->guard()->user()->devices()->whereToken($request->token)->delete();
 
         return response()->json('', 204);
     }
 
     /**
-     * Get the device management validation rules.
+     * Get the validation rules that apply to the create a device.
      *
      * @return array
      */
-    protected function rules()
+    protected function createRules()
     {
         return [
             'token' => ['required', 'string'],
+        ];
+    }
+
+    /**
+     * Get the validation rules that apply to the delete a device.
+     *
+     * @return array
+     */
+    protected function deleteRules()
+    {
+        return [
+            'token' => ['required', 'string', 'exists:devices,token'],
         ];
     }
 

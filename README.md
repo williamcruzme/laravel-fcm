@@ -276,7 +276,7 @@ Device::routes('App\Http\Controllers');
 
 ### Custom request validations
 
-The `rules` `validationErrorMessages` methods in the `DeviceController` allows you override the default request validations:
+The `createRules` `deleteRules` `validationErrorMessages` methods in the `DeviceController` allows you override the default request validations:
 
 ```php
 use williamcruzme\FCM\Traits\ManageDevices;
@@ -286,14 +286,26 @@ class DeviceController extends Controller {
     use ManageDevices;
     
     /**
-     * Get the device management validation rules.
+     * Get the validation rules that apply to the create a device.
      *
      * @return array
      */
-    protected function rules()
+    protected function createRules()
     {
         return [
-            'token' => ['required', 'string', 'unique:devices'],
+            'token' => ['required', 'string'],
+        ];
+    }
+
+    /**
+     * Get the validation rules that apply to the delete a device.
+     *
+     * @return array
+     */
+    protected function deleteRules()
+    {
+        return [
+            'token' => ['required', 'string', 'exists:devices,token'],
         ];
     }
 
