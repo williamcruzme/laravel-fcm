@@ -25,9 +25,7 @@ trait ManageDevices
             $this->guard()->user()->devices()->create($request->all());
         }
 
-        return response()->json([
-            'message' => 'Success',
-        ]);
+        return $this->sendResponse($device);
     }
 
     /**
@@ -72,6 +70,17 @@ trait ManageDevices
     protected function validationErrorMessages()
     {
         return [];
+    }
+
+    /**
+     * Get the response for a successful storing devices.
+     *
+     * @param  array  $response
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function sendResponse($response)
+    {
+        return response()->json($response);
     }
 
     /**
