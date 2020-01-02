@@ -21,7 +21,7 @@ trait ManageDevices
         if ($device) {
             $device->touch();
         } else {
-            $this->guard()->user()->devices()->create($request->all());
+            $device = $this->guard()->user()->devices()->create($request->all());
         }
 
         return $this->sendResponse($device);
