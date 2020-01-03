@@ -37,7 +37,7 @@ FCM_KEY=
 
 ### 1. Adding traits
 
-In your user model add the `HasDevices` trait. This trait supports custom guards:
+In your `App\User` model add the `HasDevices` trait. This trait supports custom models:
 
 ```php
 <?php
@@ -45,13 +45,16 @@ In your user model add the `HasDevices` trait. This trait supports custom guards
 namespace App;
 
 use williamcruzme\FCM\Traits\HasDevices;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasDevices;
+    use HasDevices, Notifiable;
 }
 ```
+
+> Remember, you may use the `williamcruzme\FCM\Traits\HasDevices` trait on any of your models. You are not limited to only including it on your `App\User` model.
 
 ### 2. Running migrations
 
@@ -59,7 +62,7 @@ class User extends Authenticatable
 php artisan migrate
 ```
 
-Sometimes you may need to customize the migrations. Using the `vendor:publish` command you can export the migrations:
+**(Optional)** Sometimes you may need to customize the migrations. Using the `vendor:publish` command you can export the migrations:
 
 ```bash
 php artisan vendor:publish --tag=migrations
@@ -100,10 +103,37 @@ public function toFcm($notifiable)
 ```
 
 ### 5. Adding routes
-Using the `Device` facade to import the routes for manage the devices:
+In your `routes/api.php` add the routes using the `Device` facade, this is for manage the devices:
 
 ```php
-Device::routes();
+Route::middleware('auth')->group(function () {
+    Device::routes();
+});
+```
+
+### 6. Sending notifications
+
+#### Using The Notifiable Trait
+
+This trait is utilized by the default `App\User` model and contains one method that may be used to send notifications: `notify`. The `notify` method expects to receive a notification instance:
+
+```php
+use App\Notifications\InvoicePaid;
+
+$user->notify(new InvoicePaid($invoice));
+```
+
+> Remember, you may use the `Illuminate\Notifications\Notifiable` trait on any of your models. You are not limited to only including it on your `App\User` model.
+
+#### Using The Notification Facade
+
+Alternatively, you may send notifications via the `Notification` facade. This is useful primarily when you need to send a notification to multiple notifiable entities such as a collection of users. To send notifications using the facade, pass all of the notifiable entities and the notification instance to the `send` method:
+
+```php
+use App\Notifications\InvoicePaid;
+use Illuminate\Support\Facades\Notification;
+
+Notification::send($users, new InvoicePaid($invoice));
 ```
 
 ## 🚀 Usage
@@ -151,9 +181,11 @@ public function toFcm($notifiable)
 }
 ```
 
+> Remember, this is optional because `FcmMessage` automatically gets all devices of `$notifiable`.
+
 ### Specifying topics
 
-Using the `topic` method you can specific the topic to send the notification. This method ignores the devices of `$notifiable`:
+Using the `topic` method you can specific the topic to send the notification:
 
 ```php
 /**
@@ -172,6 +204,8 @@ public function toFcm($notifiable)
                 ]);
 }
 ```
+
+> This method ignores the devices of `$notifiable`.
 
 ### Sending data
 
@@ -254,7 +288,7 @@ public function toFcm($notifiable)
 
 ```json
 {
-    "token": "fxssWy2Lgtk:APA91bFXy79AmofgTnBm5CfBpyeEFJsSHq0Xcdk...",
+    "token": "fxssWy2Lgtk:APA91bFXy79AmofgTnBm5CfBpyeEFJsSHq0Xcdk..."
 }
 ```
 
@@ -268,7 +302,7 @@ public function toFcm($notifiable)
 
 First of all, create your own `DeviceController` controller and add the `ManageDevices` trait.
 
-Second, modify the namespace of the `Device` facade routes:
+Second, modify the namespace of the `Device` facade routes to :
 
 ```php
 Device::routes('App\Http\Controllers');
