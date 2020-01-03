@@ -11,70 +11,21 @@
 
 laravel-fcm is a powerful [Laravel](https://laravel.com/) package to send [Push Notifications](https://firebase.google.com/docs/cloud-messaging) to one or many devices of the user. Being channel-based you only need to specify the `channel` in your Laravel [Notification](https://laravel.com/docs/master/notifications).
 
+- [Quick Start](#-quick-start)
 - [Installation](#-installation)
-- [Getting Started](#-getting-started)
-- [Usage](#-usage)
 - [Routes](#-routes)
-- [Customizing](#-customizing)
+- [Customizing The Notification](#-customizing-the-notification)
+- [Customizing The Controller](#-customizing-the-controller)
 
-## 💿 Installation
+## ⚡ Quick Start
 
-```bash
-composer require williamcruzme/laravel-fcm
-```
-
-#### Configure the enviroment
-
-Get the key of Server Key and paste in your `.env` file:
-<br>
-*(gear-next-to-project-name) > Project Settings > Cloud Messaging*
-
-```bash
-FCM_KEY=
-```
-
-## 🏁 Getting Started
-
-### 1. Adding traits
-
-In your `App\User` model add the `HasDevices` trait. This trait supports custom models:
-
-```php
-<?php
-
-namespace App;
-
-use williamcruzme\FCM\Traits\HasDevices;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-
-class User extends Authenticatable
-{
-    use HasDevices, Notifiable;
-}
-```
-
-> Remember, you may use the `williamcruzme\FCM\Traits\HasDevices` trait on any of your models. You are not limited to only including it on your `App\User` model.
-
-### 2. Running migrations
-
-```bash
-php artisan migrate
-```
-
-**(Optional)** Sometimes you may need to customize the migrations. Using the `vendor:publish` command you can export the migrations:
-
-```bash
-php artisan vendor:publish --tag=migrations
-```
-
-### 3. Creating notifications
+### 1. Creating notifications
 
 ```bash
 php artisan make:notification InvoicePaid
 ```
 
-### 4. Adding delivery channels
+### 2. Adding delivery channels
 
 Every notification class has a `via` method that determines on which channels the notification will be delivered. Add `fcm` as delivery channel:
 
@@ -89,7 +40,13 @@ public function via($notifiable)
 {
     return ['fcm'];
 }
+```
 
+### 3. Formatting notifications
+
+The `notification` method support the [Firebase payload](https://firebase.google.com/docs/cloud-messaging/http-server-ref#notification-payload-support):
+
+```php
 /**
  * Get the Firebase Message representation of the notification.
  *
@@ -98,20 +55,17 @@ public function via($notifiable)
  */
 public function toFcm($notifiable)
 {
-    // ...
+    return (new FcmMessage)
+                ->notification([
+                    'title' => 'Happy Code!',
+                    'body' => 'This is a test',
+                ]);
 }
 ```
 
-### 5. Adding routes
-In your `routes/api.php` add the routes using the `Device` facade, this is for manage the devices:
+### 4. Sending notifications
 
-```php
-Route::middleware('auth')->group(function () {
-    Device::routes();
-});
-```
-
-### 6. Sending notifications
+`FcmMessage` automatically gets all devices of the notifiable entities; you just need to send notifications. Notifications may be sent in two ways: using the `notify` method of the `Notifiable` trait or using the `Notification` facade. First, let's explore using the trait:
 
 #### Using The Notifiable Trait
 
@@ -136,28 +90,87 @@ use Illuminate\Support\Facades\Notification;
 Notification::send($users, new InvoicePaid($invoice));
 ```
 
-## 🚀 Usage
+## 💿 Installation
 
-### Basic notification
+```bash
+composer require williamcruzme/laravel-fcm
+```
 
-`FcmMessage` automatically gets all devices of `$notifiable`. The `notification` method support the [Firebase payload](https://firebase.google.com/docs/cloud-messaging/http-server-ref#notification-payload-support):
+### 1. Configure the enviroment
+
+Get the key of Server Key and paste in your `.env` file:
+<br>
+*(gear-next-to-project-name) > Project Settings > Cloud Messaging*
+
+```bash
+FCM_KEY=
+```
+
+### 2. Adding traits
+
+In your `App\User` model add the `HasDevices` trait:
 
 ```php
-/**
- * Get the Firebase Message representation of the notification.
- *
- * @param  mixed  $notifiable
- * @return \williamcruzme\FCM\Messages\FcmMessage
- */
-public function toFcm($notifiable)
+<?php
+
+namespace App;
+
+use williamcruzme\FCM\Traits\HasDevices;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class User extends Authenticatable
 {
-    return (new FcmMessage)
-                ->notification([
-                    'title' => 'Happy Code!',
-                    'body' => 'This is a test',
-                ]);
+    use HasDevices, Notifiable;
 }
 ```
+
+> Remember, you may use the `williamcruzme\FCM\Traits\HasDevices` trait on any of your models. You are not limited to only including it on your `App\User` model.
+
+### 3. Running migrations
+
+```bash
+php artisan migrate
+```
+
+**(Optional)** Sometimes you may need to customize the migrations. Using the `vendor:publish` command you can export the migrations:
+
+```bash
+php artisan vendor:publish --tag=migrations
+```
+
+### 4. Adding routes
+In your `routes/api.php` add the routes using the `Device` facade, this is for manage the devices:
+
+```php
+Route::middleware('auth')->group(function () {
+    Device::routes();
+});
+```
+
+## 🌐 Routes
+
+### Add device
+
+| Method |    URI     |
+| ------ | ---------- |
+| POST   | `/devices` |
+
+#### Body Params
+
+```json
+{
+    "token": "fxssWy2Lgtk:APA91bFXy79AmofgTnBm5CfBpyeEFJsSHq0Xcdk..."
+}
+```
+
+### Remove device
+
+| Method |           URI            |
+| ------ | ------------------------ |
+| DELETE | `/devices/{deviceToken}` |
+
+## 🎨 Customizing The Notification
 
 ### Specifying devices
 
@@ -276,29 +289,7 @@ public function toFcm($notifiable)
 }
 ```
 
-## 🌐 Routes
-
-### Add device
-
-| Method |    URI     |
-| ------ | ---------- |
-| POST   | `/devices` |
-
-#### Body Params
-
-```json
-{
-    "token": "fxssWy2Lgtk:APA91bFXy79AmofgTnBm5CfBpyeEFJsSHq0Xcdk..."
-}
-```
-
-### Remove device
-
-| Method |           URI            |
-| ------ | ------------------------ |
-| DELETE | `/devices/{deviceToken}` |
-
-## 🎨 Customizing
+## 🎨 Customizing The Controller
 
 First of all, create your own `DeviceController` controller and add the `ManageDevices` trait.
 
