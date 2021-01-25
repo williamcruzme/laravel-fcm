@@ -3,8 +3,8 @@
 namespace williamcruzme\FCM\Channels;
 
 use GuzzleHttp\Client as HttpClient;
-use williamcruzme\FCM\Messages\FcmMessage;
 use Illuminate\Notifications\Notification;
+use williamcruzme\FCM\Messages\FcmMessage;
 
 class FcmChannel
 {

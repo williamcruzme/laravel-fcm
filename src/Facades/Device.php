@@ -2,8 +2,8 @@
 
 namespace williamcruzme\FCM\Facades;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Facades\Route;
 
 class Device extends Facade
 {
@@ -24,6 +24,10 @@ class Device extends Facade
      */
     public static function routes($namespace = '\\williamcruzme\\FCM\\Http\\Controllers')
     {
+        if (! str_starts_with('\\', $namespace)) {
+            $namespace = "\\$namespace";
+        }
+
         Route::prefix('devices')->namespace($namespace)->group(function () {
             Route::post('/', 'DeviceController@store');
             Route::delete('/', 'DeviceController@destroy');
