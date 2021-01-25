@@ -37,9 +37,11 @@ trait ManageDevices
     {
         $request->validate($this->deleteRules(), $this->validationErrorMessages());
 
-        $this->guard()->user()->devices()->whereToken($request->token)->delete();
+        $model = $this->guard()->user()->devices()->firstWhere('token', $request->token);
 
-        return response()->json('', 204);
+        optional($model)->delete();
+
+        return $this->sendDestroyResponse($model);
     }
 
     /**
@@ -77,14 +79,25 @@ trait ManageDevices
     }
 
     /**
-     * Get the response for a successful storing devices.
+     * Get the response for a successful storing device.
      *
-     * @param  array  $response
+     * @param  williamcruzme\FCM\Device  $model
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function sendResponse($response)
+    protected function sendResponse($model)
     {
-        return response()->json($response);
+        return response()->json($model);
+    }
+
+    /**
+     * Get the response for a successful deleting device.
+     *
+     * @param  williamcruzme\FCM\Device  $model
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function sendDestroyResponse($model)
+    {
+        return response()->json('', 204);
     }
 
     /**
