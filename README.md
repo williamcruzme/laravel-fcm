@@ -178,9 +178,17 @@ These routes are generated automatically, once wherever you add `Device::routes(
 
 ### Remove device
 
-| Method |           URI            |
-| ------ | ------------------------ |
-| DELETE | `/devices/{deviceToken}` |
+| Method |    URI     |
+| ------ | ---------- |
+| DELETE | `/devices` |
+
+#### Body Params
+
+```json
+{
+    "token": "fxssWy2Lgtk:APA91bFXy79AmofgTnBm5CfBpyeEFJsSHq0Xcdk..."
+}
+```
 
 ## 🎨 Customizing The Notification
 
