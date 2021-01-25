@@ -8,7 +8,7 @@
 
 <br>
 
-laravel-fcm is a powerful [Laravel](https://laravel.com/) package to send [Push Notifications](https://firebase.google.com/docs/cloud-messaging) to one or many devices of the user. Being channel-based you only need to specify the `channel` in your Laravel [Notification](https://laravel.com/docs/master/notifications).
+laravel-fcm is a powerful [Laravel](https://laravel.com/) package to send [Push Notifications](https://firebase.google.com/docs/cloud-messaging) to all devices of one or many users. Being channel-based you only need to specify the `channel` in your Laravel [Notification](https://laravel.com/docs/master/notifications).
 
 ## Features
 
@@ -322,8 +322,8 @@ namespace App\Http\Controllers;
 
 use williamcruzme\FCM\Traits\ManageDevices;
 
-class DeviceController extends Controller {
-
+class DeviceController extends Controller
+{
     use ManageDevices;
     
     /**
@@ -373,8 +373,8 @@ namespace App\Http\Controllers;
 
 use williamcruzme\FCM\Traits\ManageDevices;
 
-class DeviceController extends Controller {
-
+class DeviceController extends Controller
+{
     use ManageDevices;
     
     /**
@@ -412,8 +412,8 @@ namespace App\Http\Controllers;
 
 use williamcruzme\FCM\Traits\ManageDevices;
 
-class DeviceController extends Controller {
-
+class DeviceController extends Controller
+{
     use ManageDevices;
     
     /**
