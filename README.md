@@ -2,8 +2,7 @@
 <h1 align="center" style="text-align:center">Laravel FCM</h1>
 
 <p align="center">
-  <a href="https://laravel.com/"><img src="https://badgen.net/badge/Laravel/5.5.x/red" alt="Laravel"></a>
-  <a href="https://laravel.com/"><img src="https://badgen.net/badge/Laravel/6.x/red" alt="Laravel"></a>
+  <a href="https://laravel.com/"><img src="https://badgen.net/badge/Laravel/>= 5.x/green" alt="Laravel"></a>
   <a href="https://github.com/williamcruzme/laravel-fcm"><img src="https://img.shields.io/github/license/williamcruzme/laravel-fcm" alt="GitHub"></a>
 </p>
 
@@ -11,13 +10,82 @@
 
 laravel-fcm is a powerful [Laravel](https://laravel.com/) package to send [Push Notifications](https://firebase.google.com/docs/cloud-messaging) to one or many devices of the user. Being channel-based you only need to specify the `channel` in your Laravel [Notification](https://laravel.com/docs/master/notifications).
 
-- [Quick Start](#-quick-start)
+## Features
+
+- Easy integration
+- Compatible with any version of Laravel
+- Send notifications to all devices of one or many users at the same time
+- Send millions of notifications in batch
+- Fully customizable and adaptable
+- Queue support
+
+## 📄 Content
+
 - [Installation](#-installation)
+- [Create Notification](#-create-notification)
 - [Routes](#-routes)
 - [Customizing The Notification](#-customizing-the-notification)
 - [Customizing The Controller](#-customizing-the-controller)
 
-## ⚡ Quick Start
+## 💿 Installation
+
+```bash
+composer require williamcruzme/laravel-fcm
+```
+
+### 1. Configure the enviroment
+
+Get the key of Server Key and paste in your `.env` file:
+<br>
+*(gear-next-to-project-name) > Project Settings > Cloud Messaging*
+
+```bash
+FCM_KEY=
+```
+
+### 2. Adding traits
+
+In your `App\Models\User` model add the `HasDevices` trait:
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use williamcruzme\FCM\Traits\HasDevices;
+
+class User extends Authenticatable
+{
+    use Notifiable, HasDevices;
+}
+```
+
+> Remember, you are not limited to only including the trait on your `App\Models\User` model.
+
+### 3. Running migrations
+
+```bash
+php artisan migrate
+```
+
+**(Optional)** Sometimes you may need to customize the migrations. Using the `vendor:publish` command you can export the migrations:
+
+```bash
+php artisan vendor:publish --tag=migrations
+```
+
+### 4. Adding routes
+In your `routes/api.php` add the routes using the `Device` facade, this is for manage the devices:
+
+```php
+Route::middleware('auth')->group(function () {
+    Device::routes();
+});
+```
+
+## ⚡ Create notification
 
 ### 1. Creating notifications
 
@@ -90,65 +158,9 @@ use Illuminate\Support\Facades\Notification;
 Notification::send($users, new InvoicePaid($invoice));
 ```
 
-## 💿 Installation
-
-```bash
-composer require williamcruzme/laravel-fcm
-```
-
-### 1. Configure the enviroment
-
-Get the key of Server Key and paste in your `.env` file:
-<br>
-*(gear-next-to-project-name) > Project Settings > Cloud Messaging*
-
-```bash
-FCM_KEY=
-```
-
-### 2. Adding traits
-
-In your `App\User` model add the `HasDevices` trait:
-
-```php
-<?php
-
-namespace App;
-
-use williamcruzme\FCM\Traits\HasDevices;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-
-class User extends Authenticatable
-{
-    use HasDevices, Notifiable;
-}
-```
-
-> Remember, you may use the `williamcruzme\FCM\Traits\HasDevices` trait on any of your models. You are not limited to only including it on your `App\User` model.
-
-### 3. Running migrations
-
-```bash
-php artisan migrate
-```
-
-**(Optional)** Sometimes you may need to customize the migrations. Using the `vendor:publish` command you can export the migrations:
-
-```bash
-php artisan vendor:publish --tag=migrations
-```
-
-### 4. Adding routes
-In your `routes/api.php` add the routes using the `Device` facade, this is for manage the devices:
-
-```php
-Route::middleware('auth')->group(function () {
-    Device::routes();
-});
-```
-
 ## 🌐 Routes
+
+These routes are generated automatically, once wherever you add `Device::routes();`
 
 ### Add device
 
@@ -346,6 +358,45 @@ class DeviceController extends Controller {
     protected function validationErrorMessages()
     {
         return [];
+    }
+}
+```
+
+### Custom response
+
+The `sendResponse` and `sendDestroyResponse` method in the `DeviceController` allows you override the default response:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use williamcruzme\FCM\Traits\ManageDevices;
+
+class DeviceController extends Controller {
+
+    use ManageDevices;
+    
+    /**
+     * Get the response for a successful storing device.
+     *
+     * @param  williamcruzme\FCM\Device  $model
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function sendResponse($model)
+    {
+        return response()->json($model);
+    }
+
+    /**
+     * Get the response for a successful deleting device.
+     *
+     * @param  williamcruzme\FCM\Device  $model
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function sendDestroyResponse($model)
+    {
+        return response()->json('', 204);
     }
 }
 ```
