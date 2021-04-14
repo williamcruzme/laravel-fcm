@@ -47,6 +47,13 @@ class FcmMessage
     public $priority = 'normal';
 
     /**
+     * The custom payload of the FCM message.
+     *
+     * @var array
+     */
+    public $payload = [];
+
+    /**
      * Set the devices token to send the message from.
      *
      * @param  array|string  $to
@@ -124,6 +131,19 @@ class FcmMessage
     public function priority(string $priority)
     {
         $this->priority = $priority;
+
+        return $this;
+    }
+
+    /**
+     * Set the custom payload of the FCM message.
+     *
+     * @param  array  $payload
+     * @return $this
+     */
+    public function payload(array $payload)
+    {
+        $this->payload = $payload;
 
         return $this;
     }

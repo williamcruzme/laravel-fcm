@@ -30,16 +30,25 @@ class FcmChannel
     protected $apikey;
 
     /**
+     * The global payload.
+     *
+     * @var array
+     */
+    protected $globalPayload;
+
+    /**
      * Create a new FCM channel instance.
      *
      * @param  \GuzzleHttp\Client  $http
      * @param  string  $apiKey
+     * @param  array  $globalPayload
      * @return void
      */
-    public function __construct(HttpClient $http, string $apiKey)
+    public function __construct(HttpClient $http, string $apiKey, array $globalPayload = [])
     {
         $this->http = $http;
         $this->apiKey = $apiKey;
+        $this->globalPayload = $globalPayload;
     }
 
     /**
@@ -77,7 +86,7 @@ class FcmChannel
             'data' => $message->data,
             'notification' => $message->notification,
             'condition' => $message->condition,
-        ]);
+        ] + ($message->payload ?? []) + ($this->globalPayload ?? []));
 
         if ($message->topic) {
             $payload['to'] = "/topics/{$message->topic}";

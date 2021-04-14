@@ -15,4 +15,8 @@ return [
 
     'key' => env('FCM_KEY'),
 
+    'payload' => [
+        // Global payload
+    ],
+
 ];

@@ -309,6 +309,30 @@ public function toFcm($notifiable)
 }
 ```
 
+### Custom payload
+
+Using the `payload` method you can specify a custom payload to the notification:
+
+```php
+/**
+ * Get the Firebase Message representation of the notification.
+ *
+ * @param  mixed  $notifiable
+ * @return \williamcruzme\FCM\Messages\FcmMessage
+ */
+public function toFcm($notifiable)
+{
+    return (new FcmMessage)
+                ->notification([
+                    'title' => 'Happy Code!',
+                    'body' => 'This is a test',
+                ])
+                ->payload([
+                    'android_channel_id' => '500'
+                ]);
+}
+```
+
 ## 🎨 Customizing The Controller
 
 First of all, create your own `DeviceController` controller and add the `ManageDevices` trait.
