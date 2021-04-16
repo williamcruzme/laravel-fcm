@@ -81,12 +81,14 @@ class FcmChannel
 
     protected function buildJsonPayload(FcmMessage $message)
     {
-        $payload = array_filter([
+        $payload = array_merge_recursive([
             'priority' => $message->priority,
             'data' => $message->data,
             'notification' => $message->notification,
             'condition' => $message->condition,
-        ] + ($message->payload ?? []) + ($this->globalPayload ?? []));
+        ], $message->payload ?? [], $this->globalPayload ?? []);
+
+        $payload = array_filter($payload);
 
         if ($message->topic) {
             $payload['to'] = "/topics/{$message->topic}";
