@@ -92,7 +92,7 @@ class FcmChannel
     {
         $globalPayload = $this->globalPayload ?? [];
         if ($globalPayload instanceof Closure) {
-            $globalPayload = $globalPayload($notifiable, $notification);
+            $globalPayload = $globalPayload($notification, $notifiable);
         }
 
         $payload = array_merge_recursive([
