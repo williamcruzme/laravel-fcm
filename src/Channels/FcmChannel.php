@@ -2,6 +2,7 @@
 
 namespace williamcruzme\FCM\Channels;
 
+use Closure;
 use GuzzleHttp\Client as HttpClient;
 use Illuminate\Notifications\Notification;
 use williamcruzme\FCM\Messages\FcmMessage;
@@ -32,7 +33,7 @@ class FcmChannel
     /**
      * The global payload.
      *
-     * @var array
+     * @var \Closure|array
      */
     protected $globalPayload;
 
@@ -41,10 +42,10 @@ class FcmChannel
      *
      * @param  \GuzzleHttp\Client  $http
      * @param  string  $apiKey
-     * @param  array  $globalPayload
+     * @param  \Closure|array  $globalPayload
      * @return void
      */
-    public function __construct(HttpClient $http, string $apiKey, array $globalPayload = [])
+    public function __construct(HttpClient $http, string $apiKey, $globalPayload = null)
     {
         $this->http = $http;
         $this->apiKey = $apiKey;
@@ -75,18 +76,31 @@ class FcmChannel
                 'Authorization' => "key={$this->apiKey}",
                 'Content-Type' => 'application/json',
             ],
-            'json' => $this->buildJsonPayload($message),
+            'json' => $this->buildJsonPayload($message, $notifiable, $notification),
         ]);
     }
 
-    protected function buildJsonPayload(FcmMessage $message)
+    /**
+     * Send the given notification.
+     *
+     * @param  \williamcruzme\FCM\Messages\FcmMessage  $message
+     * @param  mixed  $notifiable
+     * @param  \Illuminate\Notifications\Notification  $notification
+     * @return void
+     */
+    protected function buildJsonPayload(FcmMessage $message, $notifiable, $notification)
     {
+        $globalPayload = $this->globalPayload ?? [];
+        if ($globalPayload instanceof Closure) {
+            $globalPayload = $globalPayload($notifiable, $notification);
+        }
+
         $payload = array_merge_recursive([
             'priority' => $message->priority,
             'data' => $message->data,
             'notification' => $message->notification,
             'condition' => $message->condition,
-        ], $message->payload ?? [], $this->globalPayload ?? []);
+        ], $message->payload ?? [], $globalPayload);
 
         $payload = array_filter($payload);
 

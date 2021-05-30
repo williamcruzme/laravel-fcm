@@ -20,7 +20,7 @@ class FCMServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/config/fcm.php', 'fcm');
 
         Notification::resolved(function (ChannelManager $service) {
-            $service->extend('fcm', function ($app) {
+            $service->extend('fcm', function () {
                 return new FcmChannel(
                     new HttpClient,
                     config('fcm.key'),

@@ -40,7 +40,7 @@ Get the key of Server Key and paste in your `.env` file:
 *(gear-next-to-project-name) > Project Settings > Cloud Messaging*
 
 ```bash
-FCM_KEY=
+FIREBASE_SERVER_KEY=
 ```
 
 ### 2. Adding traits
