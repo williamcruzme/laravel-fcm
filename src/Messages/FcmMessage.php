@@ -87,11 +87,16 @@ class FcmMessage
      * Set the data of the FCM message.
      *
      * @param  array  $data
+     * @param  bool  $includeInNotification
      * @return $this
      */
-    public function data(array $data)
+    public function data(array $data, bool $includeInNotification = false)
     {
         $this->data = $data;
+
+        if ($includeInNotification) {
+            $this->notification($data);
+        }
 
         return $this;
     }
@@ -104,7 +109,7 @@ class FcmMessage
      */
     public function notification(array $notification)
     {
-        $this->notification = $notification;
+        $this->notification = array_merge($this->notification ?? [], $notification);
 
         return $this;
     }
