@@ -23,8 +23,7 @@ class FCMServiceProvider extends ServiceProvider
             $service->extend('fcm', function () {
                 return new FcmChannel(
                     new HttpClient,
-                    config('fcm.key'),
-                    config('fcm.payload')
+                    config('fcm.key')
                 );
             });
         });

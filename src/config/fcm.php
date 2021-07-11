@@ -15,14 +15,4 @@ return [
 
     'key' => env('FIREBASE_SERVER_KEY'),
 
-    'payload' => [
-        // Global payload
-    ],
-
-    // 'payload' => fn($notification, $notifiable) => [
-    //     'data' => [
-    //         'type' => get_class($notification),
-    //     ],
-    // ],
-
 ];

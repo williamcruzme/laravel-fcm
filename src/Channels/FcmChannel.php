@@ -33,23 +33,21 @@ class FcmChannel
     /**
      * The global payload.
      *
-     * @var \Closure|array
+     * @var array|\Closure
      */
-    protected $globalPayload;
+    protected static $globalPayload = [];
 
     /**
      * Create a new FCM channel instance.
      *
      * @param  \GuzzleHttp\Client  $http
      * @param  string  $apiKey
-     * @param  \Closure|array  $globalPayload
      * @return void
      */
-    public function __construct(HttpClient $http, string $apiKey, $globalPayload = null)
+    public function __construct(HttpClient $http, string $apiKey)
     {
         $this->http = $http;
         $this->apiKey = $apiKey;
-        $this->globalPayload = $globalPayload;
     }
 
     /**
@@ -90,7 +88,7 @@ class FcmChannel
      */
     protected function buildJsonPayload(FcmMessage $message, $notifiable, $notification)
     {
-        $globalPayload = $this->globalPayload ?? [];
+        $globalPayload = static::$globalPayload;
         if ($globalPayload instanceof Closure) {
             $globalPayload = $globalPayload($notification, $notifiable);
         }
@@ -100,7 +98,7 @@ class FcmChannel
             'data' => $message->data,
             'notification' => $message->notification,
             'condition' => $message->condition,
-        ], $message->payload ?? [], $globalPayload);
+        ], $message->payload ?? [], $globalPayload ?? []);
 
         $payload = array_filter($payload);
 
@@ -115,5 +113,16 @@ class FcmChannel
         }
 
         return $payload;
+    }
+
+    /**
+     * Set global payload.
+     *
+     * @param  array|\Closure  $payload
+     * @return void
+     */
+    public static function setPayload($payload)
+    {
+        static::$globalPayload = $payload;
     }
 }
