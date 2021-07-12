@@ -364,7 +364,7 @@ class DeviceController extends Controller
     /**
      * Get the response for a successful storing device.
      *
-     * @param  williamcruzme\FCM\Device  $model
+     * @param  williamcruzme\FCM\Models\Device  $model
      * @return \Illuminate\Http\JsonResponse
      */
     protected function sendResponse($model)
@@ -375,7 +375,7 @@ class DeviceController extends Controller
     /**
      * Get the response for a successful deleting device.
      *
-     * @param  williamcruzme\FCM\Device  $model
+     * @param  williamcruzme\FCM\Models\Device  $model
      * @return \Illuminate\Http\JsonResponse
      */
     protected function sendDestroyResponse($model)
