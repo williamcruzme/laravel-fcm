@@ -15,7 +15,7 @@ class CreateDevicesTable extends Migration
     {
         Schema::create('devices', function (Blueprint $table) {
             $table->bigIncrements('id')->unsigned();
-            $table->text('token');
+            $table->text('token')->index();
             $table->unsignedBigInteger('user_id');
             $table->string('user_type');
             $table->timestamps();

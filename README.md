@@ -35,12 +35,12 @@ composer require williamcruzme/laravel-fcm
 
 ### 1. Configure the enviroment
 
-Get the key of Server Key and paste in your `.env` file:
+Get the Service Account and paste in your `.env` file:
 <br>
 *(gear-next-to-project-name) > Project Settings > Cloud Messaging*
 
 ```bash
-FIREBASE_SERVER_KEY=
+FIREBASE_CREDENTIALS=/path/to/service-account.json
 ```
 
 ### 2. Adding traits
@@ -191,54 +191,6 @@ These routes are generated automatically, once wherever you add `Device::routes(
 ```
 
 ## 🎨 Customizing The Notification
-
-### Specifying devices
-
-Using the `to` method you can specific the device's to send the notification:
-
-```php
-/**
- * Get the Firebase Message representation of the notification.
- *
- * @param  mixed  $notifiable
- * @return \williamcruzme\FCM\Messages\FcmMessage
- */
-public function toFcm($notifiable)
-{
-    return (new FcmMessage)
-                ->to('fxssWy2Lgtk:APA91bFXy79AmofgTnBm5CfBpyeEFJsSHq0Xcdk...')
-                ->notification([
-                    'title' => 'Happy Code!',
-                    'body' => 'This is a test',
-                ]);
-}
-```
-
-> Remember, this is optional because `FcmMessage` automatically gets all devices of `$notifiable`.
-
-### Specifying topics
-
-Using the `topic` method you can specific the topic to send the notification:
-
-```php
-/**
- * Get the Firebase Message representation of the notification.
- *
- * @param  mixed  $notifiable
- * @return \williamcruzme\FCM\Messages\FcmMessage
- */
-public function toFcm($notifiable)
-{
-    return (new FcmMessage)
-                ->topic('news')
-                ->notification([
-                    'title' => 'Happy Code!',
-                    'body' => 'This is a test',
-                ]);
-}
-```
-
-> This method ignores the devices of `$notifiable`.
 
 ### Sending data
 

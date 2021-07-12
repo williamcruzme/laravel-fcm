@@ -1,41 +1,44 @@
 {
-  "name": "williamcruzme/laravel-fcm",
-  "type": "library",
-  "description": "A powerful Laravel package to send Push Notifications",
-  "keywords": [
-    "laravel",
-    "notification",
-    "channels"
-  ],
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "williamcruzme",
-      "email": "sv.johncruz@gmail.com",
-      "homepage": "https://github.com/williamcruzme"
-    }
-  ],
-  "require": {
-    "php": "^7.1.3|^8.0",
-    "guzzlehttp/guzzle": "*",
-    "illuminate/notifications": "*"
-  },
-  "config": {
-    "sort-packages": true
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "williamcruzme\\FCM\\FCMServiceProvider"
+    "name": "williamcruzme/laravel-fcm",
+    "type": "library",
+    "description": "A powerful Laravel package to send Push Notifications",
+    "keywords": [
+        "laravel",
+        "notification",
+        "channels"
       ],
-      "aliases": {
-        "Device": "williamcruzme\\FCM\\Facades\\Device"
-      }
+      "license": "MIT",
+      "authors": [
+        {
+          "name": "williamcruzme",
+          "email": "sv.johncruz@gmail.com",
+          "homepage": "https://github.com/williamcruzme"
+        }
+      ],
+    "require": {
+        "php": ">=7.1.3",
+        "guzzlehttp/guzzle": "^6.2 || ^7.0",
+        "illuminate/notifications": "~5.6 || ~6.0 || ~7.0 || ~8.0",
+        "illuminate/support": "~5.6 || ~6.0 || ~7.0 || ~8.0",
+        "kreait/laravel-firebase": "^1.3 || ^2.1 || ^3.0",
+        "spatie/enum": "^2.3 || ^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "williamcruzme\\FCM\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "williamcruzme\\FCM\\FcmServiceProvider"
+            ],
+            "aliases": {
+                "Device": "williamcruzme\\FCM\\Facades\\Device"
+            }
+        }
+    },
+    "config": {
+        "sort-packages": true
     }
-  },
-  "autoload": {
-    "psr-4": {
-      "williamcruzme\\FCM\\": "src/"
-    }
-  }
 }

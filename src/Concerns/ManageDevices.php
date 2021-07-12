@@ -1,6 +1,6 @@
 <?php
 
-namespace williamcruzme\FCM\Traits;
+namespace williamcruzme\FCM\Concerns;
 
 use Illuminate\Http\Request;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace williamcruzme\FCM;
+namespace williamcruzme\FCM\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,7 +12,9 @@ class Device extends Model
      * @var array
      */
     protected $fillable = [
-        'token', 'user_id', 'user_type',
+        'token',
+        'user_id',
+        'user_type',
     ];
 
     /**

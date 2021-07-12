@@ -2,13 +2,11 @@
 
 namespace williamcruzme\FCM;
 
-use GuzzleHttp\Client as HttpClient;
 use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\ServiceProvider;
-use williamcruzme\FCM\Channels\FcmChannel;
 
-class FCMServiceProvider extends ServiceProvider
+class FcmServiceProvider extends ServiceProvider
 {
     /**
      * Register any package services.
@@ -17,14 +15,9 @@ class FCMServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/config/fcm.php', 'fcm');
-
         Notification::resolved(function (ChannelManager $service) {
             $service->extend('fcm', function () {
-                return new FcmChannel(
-                    new HttpClient,
-                    config('fcm.key')
-                );
+                return new FcmChannel;
             });
         });
     }
