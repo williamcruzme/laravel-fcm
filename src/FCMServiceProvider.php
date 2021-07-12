@@ -44,10 +44,6 @@ class FcmServiceProvider extends ServiceProvider
     protected function bootForConsole()
     {
         $this->publishes([
-            __DIR__.'/config/fcm.php' => config_path('fcm.php'),
-        ], 'config');
-
-        $this->publishes([
             __DIR__.'/database/migrations' => database_path('migrations')
         ], 'migrations');
     }
