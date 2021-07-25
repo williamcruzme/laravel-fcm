@@ -1,9 +1,9 @@
 <?php
 
-namespace williamcruzme\FCM\Http\Controllers;
+namespace Williamcruzme\Fcm\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use williamcruzme\FCM\Concerns\ManageDevices;
+use Williamcruzme\Fcm\ManageDevices;
 
 class DeviceController extends Controller
 {

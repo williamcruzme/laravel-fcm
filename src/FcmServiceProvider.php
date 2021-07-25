@@ -1,6 +1,6 @@
 <?php
 
-namespace williamcruzme\FCM;
+namespace Williamcruzme\Fcm;
 
 use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\Facades\Notification;

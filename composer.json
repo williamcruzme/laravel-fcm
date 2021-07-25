@@ -25,16 +25,16 @@
     },
     "autoload": {
         "psr-4": {
-            "williamcruzme\\FCM\\": "src"
+            "Williamcruzme\\Fcm\\": "src"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "williamcruzme\\FCM\\FcmServiceProvider"
+                "Williamcruzme\\Fcm\\FcmServiceProvider"
             ],
             "aliases": {
-                "Device": "williamcruzme\\FCM\\Facades\\Device"
+                "Device": "Williamcruzme\\Fcm\\Facades\\Device"
             }
         }
     },

@@ -1,6 +1,6 @@
 <?php
 
-namespace williamcruzme\FCM\Models;
+namespace Williamcruzme\Fcm;
 
 use Illuminate\Database\Eloquent\Model;
 

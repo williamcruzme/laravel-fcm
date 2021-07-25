@@ -1,6 +1,6 @@
 <?php
 
-namespace williamcruzme\FCM\Exceptions;
+namespace Williamcruzme\Fcm\Exceptions;
 
 use Exception;
 use Kreait\Firebase\Exception\MessagingException;

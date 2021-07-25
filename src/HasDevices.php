@@ -1,8 +1,8 @@
 <?php
 
-namespace williamcruzme\FCM\Concerns;
+namespace Williamcruzme\Fcm;
 
-use williamcruzme\FCM\Models\Device;
+use Williamcruzme\Fcm\Device;
 
 trait HasDevices
 {

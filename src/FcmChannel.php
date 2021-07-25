@@ -1,11 +1,11 @@
 <?php
 
-namespace williamcruzme\FCM;
+namespace Williamcruzme\Fcm;
 
 use Closure;
 use Illuminate\Notifications\Notification;
 use Kreait\Firebase\Exception\MessagingException;
-use williamcruzme\FCM\Exceptions\CouldNotSendNotification;
+use Williamcruzme\Fcm\Exceptions\CouldNotSendNotification;
 
 class FcmChannel
 {
@@ -39,7 +39,7 @@ class FcmChannel
      * @param \Illuminate\Notifications\Notification $notification
      *
      * @return void
-     * @throws \williamcruzme\FCM\Exceptions\CouldNotSendNotification
+     * @throws \Williamcruzme\Fcm\Exceptions\CouldNotSendNotification
      * @throws \Kreait\Firebase\Exception\FirebaseException
      */
     public function send($notifiable, Notification $notification)
@@ -87,7 +87,7 @@ class FcmChannel
     }
 
     /**
-     * @param  \williamcruzme\FCM\FcmMessage  $message
+     * @param  \Williamcruzme\Fcm\FcmMessage  $message
      * @param  string  $token
      * @return array
      * @throws \Kreait\Firebase\Exception\MessagingException
@@ -101,7 +101,7 @@ class FcmChannel
     }
 
     /**
-     * @param  \williamcruzme\FCM\FcmMessage  $message
+     * @param  \Williamcruzme\Fcm\FcmMessage  $message
      * @param  array|string  $token
      * @return array
      * @return \Kreait\Firebase\Messaging\MulticastSendReport

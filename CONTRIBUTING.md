@@ -19,14 +19,11 @@ composer install
 
 As you can see we have:
 
+- `database`: contains the migrations, seeders or factories.
 - `src` contains the working code for the repository:
-  - `Channels`: contains the notifications channels.
-  - `config`: contains the package configuration files.
-  - `database`: contains the migrations, seeders or factories.
+  - `Exceptions`: contains the exceptions.
   - `Facades`: contains the package facades.
   - `Http`: contains the http utilities like controllers, requests, etc.
-  - `Messages`: contains the messages used in channels.
-  - `Traits`: contains the traits to import in the models.
 
 ### Issues
 

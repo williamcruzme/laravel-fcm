@@ -1,6 +1,6 @@
 <?php
 
-namespace williamcruzme\FCM\Concerns;
+namespace Williamcruzme\Fcm;
 
 use Illuminate\Http\Request;
 
@@ -81,7 +81,7 @@ trait ManageDevices
     /**
      * Get the response for a successful storing device.
      *
-     * @param  williamcruzme\FCM\Device  $model
+     * @param  Williamcruzme\Fcm\Device  $model
      * @return \Illuminate\Http\JsonResponse
      */
     protected function sendResponse($model)
@@ -92,7 +92,7 @@ trait ManageDevices
     /**
      * Get the response for a successful deleting device.
      *
-     * @param  williamcruzme\FCM\Device  $model
+     * @param  Williamcruzme\Fcm\Device  $model
      * @return \Illuminate\Http\JsonResponse
      */
     protected function sendDestroyResponse($model)

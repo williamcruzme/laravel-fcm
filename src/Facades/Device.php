@@ -1,6 +1,6 @@
 <?php
 
-namespace williamcruzme\FCM\Facades;
+namespace Williamcruzme\Fcm\Facades;
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\Route;

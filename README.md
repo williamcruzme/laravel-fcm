@@ -54,7 +54,7 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use williamcruzme\FCM\Traits\HasDevices;
+use Williamcruzme\Fcm\HasDevices;
 
 class User extends Authenticatable
 {
@@ -119,7 +119,7 @@ The `notification` method support the [Firebase payload](https://firebase.google
  * Get the Firebase Message representation of the notification.
  *
  * @param  mixed  $notifiable
- * @return \williamcruzme\FCM\Messages\FcmMessage
+ * @return \Williamcruzme\Fcm\Messages\FcmMessage
  */
 public function toFcm($notifiable)
 {
@@ -201,7 +201,7 @@ Using the `data` method you can specify the custom key-value pairs of the notifi
  * Get the Firebase Message representation of the notification.
  *
  * @param  mixed  $notifiable
- * @return \williamcruzme\FCM\Messages\FcmMessage
+ * @return \Williamcruzme\Fcm\Messages\FcmMessage
  */
 public function toFcm($notifiable)
 {
@@ -226,7 +226,7 @@ Using the `condition` method you can specify a boolean expression to send the no
  * Get the Firebase Message representation of the notification.
  *
  * @param  mixed  $notifiable
- * @return \williamcruzme\FCM\Messages\FcmMessage
+ * @return \Williamcruzme\Fcm\Messages\FcmMessage
  */
 public function toFcm($notifiable)
 {
@@ -248,7 +248,7 @@ Using the `priority` method you can specify a priority of the notification. Defa
  * Get the Firebase Message representation of the notification.
  *
  * @param  mixed  $notifiable
- * @return \williamcruzme\FCM\Messages\FcmMessage
+ * @return \Williamcruzme\Fcm\Messages\FcmMessage
  */
 public function toFcm($notifiable)
 {
@@ -270,7 +270,7 @@ Using the `payload` method you can specify a custom payload to the notification:
  * Get the Firebase Message representation of the notification.
  *
  * @param  mixed  $notifiable
- * @return \williamcruzme\FCM\Messages\FcmMessage
+ * @return \Williamcruzme\Fcm\Messages\FcmMessage
  */
 public function toFcm($notifiable)
 {
@@ -304,7 +304,7 @@ The `createRules` `deleteRules` `validationErrorMessages` methods in the `Device
 
 namespace App\Http\Controllers;
 
-use williamcruzme\FCM\Traits\ManageDevices;
+use Williamcruzme\Fcm\Traits\ManageDevices;
 
 class DeviceController extends Controller
 {
@@ -355,7 +355,7 @@ The `sendResponse` and `sendDestroyResponse` method in the `DeviceController` al
 
 namespace App\Http\Controllers;
 
-use williamcruzme\FCM\Traits\ManageDevices;
+use Williamcruzme\Fcm\Traits\ManageDevices;
 
 class DeviceController extends Controller
 {
@@ -364,7 +364,7 @@ class DeviceController extends Controller
     /**
      * Get the response for a successful storing device.
      *
-     * @param  williamcruzme\FCM\Models\Device  $model
+     * @param  Williamcruzme\Fcm\Device  $model
      * @return \Illuminate\Http\JsonResponse
      */
     protected function sendResponse($model)
@@ -375,7 +375,7 @@ class DeviceController extends Controller
     /**
      * Get the response for a successful deleting device.
      *
-     * @param  williamcruzme\FCM\Models\Device  $model
+     * @param  Williamcruzme\Fcm\Device  $model
      * @return \Illuminate\Http\JsonResponse
      */
     protected function sendDestroyResponse($model)
@@ -394,7 +394,7 @@ The `guard` method in the `DeviceController` allows you override the default gua
 
 namespace App\Http\Controllers;
 
-use williamcruzme\FCM\Traits\ManageDevices;
+use Williamcruzme\Fcm\Traits\ManageDevices;
 
 class DeviceController extends Controller
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace williamcruzme\FCM;
+namespace Williamcruzme\Fcm;
 
 use Kreait\Firebase\Messaging\Message;
 
