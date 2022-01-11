@@ -22,7 +22,7 @@ class Device extends Facade
      *
      * @return void
      */
-    public static function routes($namespace = '\\williamcruzme\\FCM\\Http\\Controllers')
+    public static function routes($namespace = '\\Williamcruzme\\Fcm\\Http\\Controllers')
     {
         if (! str_starts_with('\\', $namespace)) {
             $namespace = "\\$namespace";

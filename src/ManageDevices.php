@@ -64,7 +64,7 @@ trait ManageDevices
     protected function deleteRules()
     {
         return [
-            'token' => ['required', 'string', 'exists:devices,token'],
+            'token' => ['required', 'string'],
         ];
     }
 

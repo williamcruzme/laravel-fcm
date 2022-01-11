@@ -4,33 +4,19 @@ namespace Williamcruzme\Fcm;
 
 use Closure;
 use Illuminate\Notifications\Notification;
-use Kreait\Firebase\Exception\MessagingException;
 use Williamcruzme\Fcm\Exceptions\CouldNotSendNotification;
 
 class FcmChannel
 {
+    /**
+     * @var int
+     */
     const MAX_TOKEN_PER_REQUEST = 500;
 
     /**
-     * @var string|null
+     * @var \Closure|null
      */
-    protected static $fcmProject = null;
-
-    /**
-     * @var array|\Closure
-     */
-    protected static $globalPayload = [];
-
-    /**
-     * Set project ID.
-     *
-     * @param  string  $project
-     * @return void
-     */
-    public static function setProject($project)
-    {
-        static::$fcmProject = $project;
-    }
+    protected static $beforeSendingCallback;
 
     /**
      * Send the given notification.
@@ -44,37 +30,42 @@ class FcmChannel
      */
     public function send($notifiable, Notification $notification)
     {
+        // Get device token
         $token = $notifiable->routeNotificationFor('fcm', $notification);
         if (empty($token)) {
             return;
         }
 
-        // Get the message from the notification class
+        $token = is_array($token) && count($token) === 1 ? $token[0] : $token;
+
+        // Get the message from the notification
         $message = $notification->toFcm($notifiable);
         if (! $message instanceof FcmMessage) {
             throw CouldNotSendNotification::invalidMessage();
         }
 
-        // Apply global payload
-        if ($globalPayload = static::$globalPayload) {
-            $message = $globalPayload($message, $notification, $notifiable);
+        // Apply before sending callback
+        if ($callback = static::$beforeSendingCallback) {
+            $message = $callback($message, $notification, $notifiable);
         }
 
         try {
-            // Get device token
-            $token = is_array($token) && count($token) === 1 ? $token[0] : $token;
-
+            // Send notification
             if (is_array($token)) {
-                // Use multicast when there are multiple recipients
                 $partialTokens = array_chunk($token, self::MAX_TOKEN_PER_REQUEST, false);
                 foreach ($partialTokens as $tokens) {
-                    $this->sendToFcmMulticast($message, $tokens);
+                    $report = $this->messaging()->sendMulticast($message, $tokens);
+                    $unknownTokens = $report->unknownTokens();
+                    if (! empty($unknownTokens)) {
+                        $notifiable->devices()->whereIn('token', $unknownTokens)->delete();
+                    }
                 }
             } else {
-                $this->sendToFcm($message, $token);
+                $message->token($token);
+                $this->messaging()->send($message);
             }
-        } catch (MessagingException $exception) {
-            throw CouldNotSendNotification::serviceRespondedWithAnError($exception);
+        } catch (\Exception $exception) {
+            $notifiable->devices()->delete();
         }
     }
 
@@ -87,40 +78,13 @@ class FcmChannel
     }
 
     /**
-     * @param  \Williamcruzme\Fcm\FcmMessage  $message
-     * @param  string  $token
-     * @return array
-     * @throws \Kreait\Firebase\Exception\MessagingException
-     * @throws \Kreait\Firebase\Exception\FirebaseException
-     */
-    protected function sendToFcm(FcmMessage $message, string $token)
-    {
-        $message->token($token);
-
-        return $this->messaging()->send($message);
-    }
-
-    /**
-     * @param  \Williamcruzme\Fcm\FcmMessage  $message
-     * @param  array|string  $token
-     * @return array
-     * @return \Kreait\Firebase\Messaging\MulticastSendReport
-     * @throws \Kreait\Firebase\Exception\MessagingException
-     * @throws \Kreait\Firebase\Exception\FirebaseException
-     */
-    protected function sendToFcmMulticast(FcmMessage $message, array $tokens)
-    {
-        return $this->messaging()->sendMulticast($message, $tokens);
-    }
-
-    /**
-     * Set global payload.
+     * Set the callback to be run before sending message.
      *
-     * @param  array|\Closure  $payload
+     * @param  \Closure  $callback
      * @return void
      */
-    public static function setPayload($payload)
+    public static function beforeSending(Closure $callback)
     {
-        static::$globalPayload = $payload;
+        static::$beforeSendingCallback = $callback;
     }
 }

@@ -13,8 +13,8 @@ class Device extends Model
      */
     protected $fillable = [
         'token',
-        'user_id',
         'user_type',
+        'user_id',
     ];
 
     /**

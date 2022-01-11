@@ -23,6 +23,6 @@ trait HasDevices
      */
     public function routeNotificationForFcm()
     {
-        return $this->devices->pluck('token')->all();
+        return $this->devices()->pluck('token')->all();
     }
 }
