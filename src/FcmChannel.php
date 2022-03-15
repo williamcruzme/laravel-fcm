@@ -57,7 +57,7 @@ class FcmChannel
                     $report = $this->messaging()->sendMulticast($message, $tokens);
                     $unknownTokens = $report->unknownTokens();
                     if (! empty($unknownTokens)) {
-                        $notifiable->devices()->whereIn('token', $unknownTokens)->delete();
+                        $notifiable->devices()->whereIn('token', $unknownTokens)->get()->each->delete();
                     }
                 }
             } else {
@@ -65,7 +65,7 @@ class FcmChannel
                 $this->messaging()->send($message);
             }
         } catch (\Exception $exception) {
-            $notifiable->devices()->delete();
+            $notifiable->devices()->get()->each->delete();
         }
     }
 
