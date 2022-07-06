@@ -183,7 +183,7 @@ class FcmMessage implements Message
      */
     public function toArray()
     {
-        return [
+        $data = [
             'name' => $this->name,
             'data' => $this->data,
             'notification' => $this->notification,
@@ -191,9 +191,17 @@ class FcmMessage implements Message
             'webpush' => $this->webpush,
             'apns' => $this->apns,
             'fcm_options' => $this->fcmOptions,
-            'condition' => $this->condition,
-            'token' => $this->token,
         ];
+
+        if ($this->token) {
+            $data['token'] = $this->token;
+        }
+
+        if ($this->condition) {
+            $data['condition'] = $this->condition;
+        }
+
+        return $data;
     }
 
     /**
